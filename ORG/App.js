@@ -1,37 +1,15 @@
-import React ,{useEffect,useState}from 'react';
-import { StyleSheet, Text, View,TextInput,Button } from 'react-native';
-import { createStackNavigator } from '@react-navigation/native';
+import React from 'react';
+import { StyleSheet, Text, View, TextInput, Button, SafeAreaView } from 'react-native';
+// import { createStackNavigator } from '@react-navigation/native';
 import SocketIOClient from 'socket.io-client';
+// const Stack = createStackNavigator();
 
-export default function App(){
+import { useState, useEffect } from 'react';
+export default function App() {
 
+  const socket = SocketIOClient('http://192.168.43.52:3000');
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
-  const socket = SocketIOClient('http://localhost:3000');
-
-   socket.on('connect', () => {
-  console.log('Connected to server');
-   });
-
-   socket.on('disconnect', () => {
-  console.log('Disconnected from server');
-   });
-
-  socket.on('chat message', (msg) => {
-  console.log('New message:', msg);
-   });
-
-const sendMessage = (msg) => {
-  socket.emit('chat message', msg);
-};
-
-
-  useEffect(() => {
-    socket.on('chat message', (msg) => {
-      console.log("The Message is here = " ,msg);
-      setMessages([...messages, msg]);
-    });
-  }, [messages]);
 
   const handleSendMessage = () => {
     sendMessage(message);
@@ -39,24 +17,46 @@ const sendMessage = (msg) => {
   };
 
 
+  useEffect(() => {
+    socket.on('chat message', (message) => {
+      console.log(message)
+      setMessages((messages) => [...messages, message]);
+    });
+  }, []);
 
-  return(
-    <View style={{paddingTop:"200px"}}>
-    <Text>Chat Screen</Text>
-    <View>
-      {messages.map((msg, index) => (
-        <Text key={index}>{msg}</Text>
-      ))}
-    </View>
-    <TextInput
-      value={message}
-      onChangeText={setMessage}
-    />
-    <Button
-      title="Send"
-      onPress={handleSendMessage}
-    />
-  </View>
-  )
+  const sendMessage = () => {
+    if (message) {
+      socket.emit('chat message', message, () => setMessage(''));
+    }
+  };
 
+
+  return (
+    <SafeAreaView style={{ margin: 10,paddingTop:"50px" }}>
+      <View>
+  
+      </View>
+      <Text>Chat Screen</Text>
+      
+      <TextInput
+        value={message}
+        placeholder='Enter message'
+        onChangeText={(val) => { setMessage(val) }}
+        style={{ borderWidth: 1, borderColor: 'black', padding: 12, borderRadius: 4 }}
+      />
+      <Button
+        title="Send"
+        onPress={handleSendMessage}
+      />
+
+<View>
+        {messages.map((msg, index) => (
+          <Text key={index}>{msg}</Text>
+        ))}
+      </View>
+    </SafeAreaView>
+
+
+
+  );
 }

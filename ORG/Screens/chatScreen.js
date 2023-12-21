@@ -45,7 +45,7 @@ export default function ChatScreen() {
      console.log(test);
      console.log("useEffect.1")
   //     db.transaction(tx => {
-  //       tx.executeSql('SELECT * FROM kiwi', null,
+  //       tx.executeSql('SELECT * FROM NewNewKiwi', null,
   //         // (txObj, resultSet) => setNames(resultSet.rows._array),
   //           (txObj, resultSet) =>setTest(resultSet.rows._array),
               
@@ -62,16 +62,16 @@ export default function ChatScreen() {
       setMessages((messages) => [...messages, message]);
 
       // db.transaction(tx => {
-      //   tx.executeSql('CREATE TABLE IF NOT EXISTS kiwi (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT)'),
+      //   tx.executeSql('CREATE TABLE IF NOT EXISTS NewNewKiwi (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT)'),
       //   i=i+1,
       //   console.log("Table  Created"),
       //   console.log("value of i is = "+i)
       // });
   //     db.transaction(tx => {
-  //       tx.executeSql('SELECT * FROM kiwi', null,
+  //       tx.executeSql('SELECT * FROM NewNewKiwi', null,
   //         // (txObj, resultSet) => setNames(resultSet.rows._array),
   //           (txObj, resultSet) =>setTest(resultSet.rows._array),
-  //             console.log('selec from kiwi new table '),
+  //             console.log('selec from NewNewKiwi new table '),
   //             // setTest(resultSet.rows._array)
   //         // setNames(test),
   //          (txObj, error) => console.log(error)
@@ -85,10 +85,10 @@ export default function ChatScreen() {
       console.log(test);
 
       db.transaction(tx => {
-        tx.executeSql('SELECT * FROM kiwi', null,
+        tx.executeSql('SELECT * FROM NewKiwi', null,
           // (txObj, resultSet) => setNames(resultSet.rows._array),
             (txObj, resultSet) =>setTest(resultSet.rows._array),
-              console.log('selec from kiwi new table '),
+              console.log('selec from NewKiwi new table '),
               // setTest(resultSet.rows._array)
           // setNames(test),
            (txObj, error) => console.log(error)
@@ -107,7 +107,7 @@ useEffect(()=>{
 
   console.log("useEffect.2")
   db.transaction(tx => {
-    tx.executeSql('CREATE TABLE IF NOT EXISTS kiwi (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT)'),
+    tx.executeSql('CREATE TABLE IF NOT EXISTS NewKiwi (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT)'),
     i=i+1,
     console.log("Table  Created"),
     console.log("value of i is = "+i)
@@ -116,13 +116,13 @@ useEffect(()=>{
 },[])
 
 useEffect(()=>{  
-   console.log("useEffect.3")
+ //  console.log("useEffect.3")
 
  db.transaction(tx => {
-        tx.executeSql('SELECT * FROM kiwi', null,
+        tx.executeSql('SELECT * FROM NewKiwi', null,
           // (txObj, resultSet) => setNames(resultSet.rows._array),
             (txObj, resultSet) =>setTest(resultSet.rows._array),
-              // console.log('selec from kiwi new table '),
+              // console.log('selec from NewKiwi new table '),
               // setTest(resultSet.rows._array)
           // setNames(test),
            (txObj, error) => console.log(error)
@@ -132,8 +132,7 @@ useEffect(()=>{
 
   
 }
-
-,[])
+)
 
 
 
@@ -145,11 +144,14 @@ useEffect(()=>{
       // This below message is used to send the message from anyside
       socket.emit('chat message', message, () => setMessage(''));
       db.transaction(tx => {
-        tx.executeSql('INSERT INTO kiwi (name) values (?)', [message],
+        tx.executeSql('INSERT INTO NewKiwi (name) values (?)', [message],
           (txObj, resultSet) => {
             let existingMessage = [...message];
             existingMessage.push({ id: resultSet.insertId, name: message});
             setMessages(existingMessage);
+           console.log('ExistingMessage is here below = ')
+            console.log(existingMessage)
+            console.log('test in message is here = ' + test[0])
             setCurrentName(undefined);
           },
           (txObj, error) => console.log(error)

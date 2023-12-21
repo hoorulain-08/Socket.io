@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './Screens/Enter';
 import ChatScreen from './Screens/chatScreen';
+import Login from './Screens/LogIn';
 // import { Provide,Practice } from './Context';
 // const ss=React.createContext();
 const Stack = createNativeStackNavigator();
@@ -33,7 +34,8 @@ export default function App() {
   return (
     //  <Provide>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="LogIn">
+        <Stack.Screen name="LogIn" component={Login} />
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="ChatScreen" component={ChatScreen} />
       </Stack.Navigator>

@@ -11,10 +11,10 @@ const fb = SQLite.openDatabase(
 );
 
 
-export default fb.transaction((tx) => {
+ fb.transaction((tx) => {
   tx.executeSql(
     'CREATE TABLE IF NOT EXISTS InMessage (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT)'
   );
 });
 
-  
+  export default fb

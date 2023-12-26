@@ -3,17 +3,18 @@ import { StyleSheet, Text, View, TextInput, Button, Platform,FlatList ,SafeAreaV
 // import { createStackNavigator } from '@react-navigation/native';
 import SocketIOClient from 'socket.io-client';
 // const Stack = createStackNavigator();
-import * as SQLite from 'expo-sqlite';
+// import * as SQLite from 'expo-sqlite';
 import { useState, useEffect } from 'react';
 import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
 import * as DocumentPicker from 'expo-document-picker';
-
+import  db from '../Database/SqliteDb';
+import fb from '../Database/SqliteNew';
 export default function ChatScreen() {
 
-  const [db, setDb] = useState(SQLite.openDatabase('example.db'));
+  //const [db, setDb] = useState(SQLite.openDatabase('example.db'));
   const [isLoading, setIsLoading] = useState(true);
-  const [names, setNames] = useState([]);
+  const [name, setName] = useState([]);
   const [currentName, setCurrentName] = useState(undefined);
   let [flatListItems, setFlatListItems] = useState([]);
   const [test,setTest]=useState(['hello wold']);
@@ -25,7 +26,7 @@ export default function ChatScreen() {
   ];
 
   var tab=0;
-  const socket = SocketIOClient('http://192.168.43.52:3000'); //replacing current network IP
+  const socket = SocketIOClient('http://192.168.70.158:3000'); //replacing current network IP
   const [
     messages, setMessages] = useState([]);
   const [message, setMessage] = useState([]);
@@ -39,100 +40,90 @@ export default function ChatScreen() {
 
   };
 
-
   useEffect(() => {
+    // Connect to the Socket.io server
 
-     console.log(test);
-     console.log("useEffect.1")
-  //     db.transaction(tx => {
-  //       tx.executeSql('SELECT * FROM NewNewKiwi', null,
-  //         // (txObj, resultSet) => setNames(resultSet.rows._array),
-  //           (txObj, resultSet) =>setTest(resultSet.rows._array),
-              
-  //             // setTest(resultSet.rows._array)
-  //         // setNames(test),
-  //          (txObj, error) => console.log(error)
-  //       );
-  // // console.log(names);
-  //     });
 
-    console.log("chatScreen useEffect")
-    socket.on('chat message', (message) => {
-      console.log(message);
-      setMessages((messages) => [...messages, message]);
 
-      // db.transaction(tx => {
-      //   tx.executeSql('CREATE TABLE IF NOT EXISTS NewNewKiwi (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT)'),
-      //   i=i+1,
-      //   console.log("Table  Created"),
-      //   console.log("value of i is = "+i)
-      // });
-  //     db.transaction(tx => {
-  //       tx.executeSql('SELECT * FROM NewNewKiwi', null,
-  //         // (txObj, resultSet) => setNames(resultSet.rows._array),
-  //           (txObj, resultSet) =>setTest(resultSet.rows._array),
-  //             console.log('selec from NewNewKiwi new table '),
-  //             // setTest(resultSet.rows._array)
-  //         // setNames(test),
-  //          (txObj, error) => console.log(error)
-  //       );
-  // // console.log(names);
-  //     });
-
+    socket.connect();
   
-      
-      console.log("test is here below");
-      console.log(test);
+    // Listen for incoming messages
+    socket.on('chatMessage', (message) => {
+   // setMessages((prevMessages) => [...prevMessages, message]);
+      //  console.log("Messages stored in Array are here below  ") 
+      // console.log(messages)
+      console.log("Message recevied from Backend are below ")
+      console.log(message)
 
-      db.transaction(tx => {
-        tx.executeSql('SELECT * FROM NewKiwi', null,
-          // (txObj, resultSet) => setNames(resultSet.rows._array),
-            (txObj, resultSet) =>setTest(resultSet.rows._array),
-              console.log('selec from NewKiwi new table '),
-              // setTest(resultSet.rows._array)
-          // setNames(test),
-           (txObj, error) => console.log(error)
-        );
-  // console.log(names);
-      });
+// Sqlite Database
+db.transaction((tx) => {
+    tx.executeSql(
+      `INSERT INTO messages (name) values (?)`,
+      [message],
+      (tx, result) => {
+        console.log('Message saved to the database');
+      },
+      (error) => {
+        console.log('Error saving message:', error);
+      }
+    );
+
+    db.transaction(tx => {
+      tx.executeSql('SELECT * FROM messages ', null,
+         (txObj, resultSet) =>{ setTest(resultSet.rows._array)
+        , console.log(resultSet.rows._array)},
+            console.log('1.'),
+            // setTest(resultSet.rows._array)
+           
+        // setNames(test),
+         (txObj, error) => console.log(error)
+      );
+// console.log(names);
+    });
+
+  });
+
+ 
+
+
+
+/////
 
 
     });
 
+
+
+
     
+  
+    // Clean up the socket connection when the component unmounts
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
-  }, [db]);
 
-useEffect(()=>{
 
-  console.log("useEffect.2")
-  db.transaction(tx => {
-    tx.executeSql('CREATE TABLE IF NOT EXISTS NewKiwi (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT)'),
-    i=i+1,
-    console.log("Table  Created"),
-    console.log("value of i is = "+i)
-  });
 
-},[])
+// useEffect(()=>{  
+//   console.log("useEffect.3")
 
-useEffect(()=>{  
- //  console.log("useEffect.3")
-
- db.transaction(tx => {
-        tx.executeSql('SELECT * FROM NewKiwi', null,
-          // (txObj, resultSet) => setNames(resultSet.rows._array),
-            (txObj, resultSet) =>setTest(resultSet.rows._array),
-              // console.log('selec from NewKiwi new table '),
-              // setTest(resultSet.rows._array)
-          // setNames(test),
-           (txObj, error) => console.log(error)
-        );
-  // console.log(names);
-      });
+//  db.transaction(tx => {
+//         tx.executeSql('SELECT * FROM messages', null,
+//           // (txObj, resultSet) => setNames(resultSet.rows._array),
+//             (txObj, resultSet) =>setTest(resultSet.rows._array),
+//               // console.log('selec from NewKiwi new table '),
+//               // setTest(resultSet.rows._array)
+//           // setNames(test),
+//            (txObj, error) => console.log(error)
+//         );
+//   // console.log(names);
+//       });
 
   
-}
-)
+// }
+// )
 
 
 
@@ -140,26 +131,62 @@ useEffect(()=>{
 
 
   const sendMessage = () => {
-    if (message) {
-      // This below message is used to send the message from anyside
-      socket.emit('chat message', message, () => setMessage(''));
-      db.transaction(tx => {
-        tx.executeSql('INSERT INTO NewKiwi (name) values (?)', [message],
-          (txObj, resultSet) => {
-            let existingMessage = [...message];
-            existingMessage.push({ id: resultSet.insertId, name: message});
-            setMessages(existingMessage);
-           console.log('ExistingMessage is here below = ')
-            console.log(existingMessage)
-            console.log('test in message is here = ' + test[0])
-            setCurrentName(undefined);
-          },
-          (txObj, error) => console.log(error)
-        );
-      });
-    }
-    else
-    alert("Please Enter something")
+    // if (message) {
+    //   // This below message is used to send the message from anyside
+    //   socket.emit('chat message', message, () => setMessage(''));
+      // fb.transaction(tx => {
+      //   tx.executeSql(
+      //     `INSERT INTO InMessage (name) values (?)`,
+      //     [message],
+      //     (tx, result) => {
+      //       console.log('Message saved to the fb database');
+      //     },
+      //     (error) => {
+      //       console.log('Error in fb  saving message:', error);
+      //     }
+      //   );
+      // });
+    // }
+  //   db.transaction(tx => {
+  //     console.log("Here is I am in sendMessage SQL lite Database")
+  //       tx.executeSql('SELECT * FROM messages ', null,
+  //          (txObj, resultSet) =>{
+  //           setMessages((prevMessages) => [...prevMessages, resultSet.rows._array]),
+  //             console.log("Messages Saved in Database are here below"),
+  //            // console.log(resultSet.rows._array)
+  //           console.log(' Sqlite daba select from messages new table '),
+  //          // console.log(messages)
+  //           console.log("saving messages below in show ")
+  //           test=[...messages]
+  //           setShow([test])
+  //           console.log("show messages are here below")
+  //           console.log(show)
+  //           },
+  //             // setTest(resultSet.rows._array)
+  //         // setNames(test),
+  //          (txObj, error) => console.log(error)
+  //       );
+  // // console.log(names);
+  //     });
+
+
+
+//   fb.transaction(tx => {
+//     tx.executeSql('SELECT * FROM InMessage ', null,
+//        (txObj, resultSet) =>{ setName(resultSet.rows._array),
+//         console.log("fb data table fetched below")
+//       , console.log(resultSet.rows._array)},
+//           console.log('1.'),
+//           // setTest(resultSet.rows._array)
+         
+//       // setNames(test),
+//        (txObj, error) => console.log(error)
+//     );
+// // console.log(names);
+//   });
+
+      socket.emit('chatMessage', message);
+      setMessage('');
    
   };
 
@@ -169,7 +196,7 @@ useEffect(()=>{
 
 
   return (
-    <SafeAreaView style={{ margin: 10,paddingTop:"50px" }}>
+    <SafeAreaView style={{ margin: 10,marginTop:50 }}>
       <View style={styles.container}>
   
       </View>
@@ -191,7 +218,7 @@ useEffect(()=>{
       />
       <Button
         title="Send"
-        onPress={handleSendMessage}
+        onPress={sendMessage}
       />
 
       {/* <View>
@@ -202,6 +229,10 @@ useEffect(()=>{
         ))}
       </View> */}
 
+
+<Text>
+  These messages are displayed from Backend
+</Text>
 <FlatList 
 data={test}
 renderItem={(e)=>{
@@ -212,6 +243,25 @@ renderItem={(e)=>{
   )
 }}
 />
+
+<Text>
+  {'\n'}
+</Text>
+
+{/* <Text style={{color:'green'}}> 
+  This Following List is From FrontEnd
+</Text>
+<FlatList 
+style={{color:'red'}}
+data={name}
+renderItem={(e)=>{
+  return(
+     <View><Text>{e.index.id}</Text>
+  <Text>{e.item.name}</Text>
+  </View>
+  )
+}}
+/> */}
 
     </SafeAreaView>
 
@@ -234,4 +284,3 @@ const styles = StyleSheet.create({
     margin: 8
   }
 });
-

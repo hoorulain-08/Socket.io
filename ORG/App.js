@@ -5,6 +5,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './Screens/Enter';
 import ChatScreen from './Screens/chatScreen';
 import Login from './Screens/LogIn';
+import TestingChat from './Screens/TestingChat';
+import  FList from "./Screens/FList"
 // import { Provide,Practice } from './Context';
 // const ss=React.createContext();
 const Stack = createNativeStackNavigator();
@@ -34,10 +36,12 @@ export default function App() {
   return (
     //  <Provide>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="LogIn">
+      <Stack.Navigator initialRouteName="ChatScreen">
+  <Stack.Screen name="ChatScreen" component={ChatScreen} />
+      <Stack.Screen name="TestChat" component={TestingChat} />
         <Stack.Screen name="LogIn" component={Login} />
         <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="ChatScreen" component={ChatScreen} />
+       
       </Stack.Navigator>
     </NavigationContainer>
     // </Provide>

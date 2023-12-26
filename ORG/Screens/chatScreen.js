@@ -9,7 +9,8 @@ import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
 import * as DocumentPicker from 'expo-document-picker';
 import  db from '../Database/SqliteDb';
-import fb from '../Database/SqliteNew';
+import  fb from '../Database/SqliteDb';
+// import fb from '../Database/SqliteNew';
 export default function ChatScreen() {
 
   //const [db, setDb] = useState(SQLite.openDatabase('example.db'));
@@ -46,7 +47,7 @@ export default function ChatScreen() {
 
 
     socket.connect();
-  
+    // console.log("Messages stored in Array are here below  ") 
     // Listen for incoming messages
     socket.on('chatMessage', (message) => {
    // setMessages((prevMessages) => [...prevMessages, message]);
@@ -83,7 +84,18 @@ db.transaction((tx) => {
 
   });
 
- 
+  fb.transaction(tx => {
+    tx.executeSql(
+      `INSERT INTO InMessage (name) values (?)`,
+      [message],
+      (tx, result) => {
+        console.log('Message saved to the fb database');
+      },
+      (error) => {
+        console.log('Error in fb  saving message:', error);
+      }
+    );
+  });
 
 
 
@@ -146,7 +158,7 @@ db.transaction((tx) => {
       //     }
       //   );
       // });
-    // }
+    
   //   db.transaction(tx => {
   //     console.log("Here is I am in sendMessage SQL lite Database")
   //       tx.executeSql('SELECT * FROM messages ', null,

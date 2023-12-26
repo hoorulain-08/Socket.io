@@ -9,8 +9,8 @@ import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
 import * as DocumentPicker from 'expo-document-picker';
 import  db from '../Database/SqliteDb';
-import  fb from '../Database/SqliteDb';
-// import fb from '../Database/SqliteNew';
+// import  fb from '../Database/SqliteDb';
+import fb from '../Database/SqliteNew';
 export default function ChatScreen() {
 
   //const [db, setDb] = useState(SQLite.openDatabase('example.db'));
@@ -72,8 +72,10 @@ db.transaction((tx) => {
     db.transaction(tx => {
       tx.executeSql('SELECT * FROM messages ', null,
          (txObj, resultSet) =>{ setTest(resultSet.rows._array)
-        , console.log(resultSet.rows._array)},
-            console.log('1.'),
+        // , console.log(resultSet.rows._array)
+      
+      },
+            // console.log('1.'),
             // setTest(resultSet.rows._array)
            
         // setNames(test),
@@ -84,19 +86,7 @@ db.transaction((tx) => {
 
   });
 
-  fb.transaction(tx => {
-    tx.executeSql(
-      `INSERT INTO InMessage (name) values (?)`,
-      [message],
-      (tx, result) => {
-        console.log('Message saved to the fb database');
-      },
-      (error) => {
-        console.log('Error in fb  saving message:', error);
-      }
-    );
-  });
-
+ 
 
 
 /////
@@ -146,19 +136,32 @@ db.transaction((tx) => {
     // if (message) {
     //   // This below message is used to send the message from anyside
     //   socket.emit('chat message', message, () => setMessage(''));
-      // fb.transaction(tx => {
-      //   tx.executeSql(
-      //     `INSERT INTO InMessage (name) values (?)`,
-      //     [message],
-      //     (tx, result) => {
-      //       console.log('Message saved to the fb database');
-      //     },
-      //     (error) => {
-      //       console.log('Error in fb  saving message:', error);
-      //     }
-      //   );
-      // });
-    
+      fb.transaction(tx => {
+        tx.executeSql(
+          `INSERT INTO InMessage (name) values (?)`,
+          [message],
+          (tx, result) => {
+            console.log('Message saved to the fb database');
+          },
+          (error) => {
+            console.log('Error in fb  saving message:', error);
+          }
+        );
+      });
+      fb.transaction(tx => {
+        tx.executeSql('SELECT * FROM InMessage ', null,
+           (txObj, resultSet) =>{ setName(resultSet.rows._array)
+          // , console.log(resultSet.rows._array)
+        
+        },
+              // console.log('1.'),
+              // setTest(resultSet.rows._array)
+             
+          // setNames(test),
+           (txObj, error) => console.log(error)
+        );
+  // console.log(names);
+      });
   //   db.transaction(tx => {
   //     console.log("Here is I am in sendMessage SQL lite Database")
   //       tx.executeSql('SELECT * FROM messages ', null,
@@ -197,13 +200,22 @@ db.transaction((tx) => {
 // // console.log(names);
 //   });
 
+
+
+
+
+
+
+
+
       socket.emit('chatMessage', message);
       setMessage('');
    
   };
 
-  const addName = () => {
-  
+  const display = () => {
+  // there function would just display the array content saved in SQLite database file  just for one time 
+  //then it would disappear 
   }
 
 
@@ -260,7 +272,7 @@ renderItem={(e)=>{
   {'\n'}
 </Text>
 
-{/* <Text style={{color:'green'}}> 
+<Text style={{color:'green'}}> 
   This Following List is From FrontEnd
 </Text>
 <FlatList 
@@ -273,7 +285,7 @@ renderItem={(e)=>{
   </View>
   )
 }}
-/> */}
+/>
 
     </SafeAreaView>
 

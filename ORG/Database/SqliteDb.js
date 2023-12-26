@@ -1,6 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 
-const databaseName = 'TestInk.db';
+const databaseName = 'Ink.db';
 const databaseVersion = '1.0';
 
 

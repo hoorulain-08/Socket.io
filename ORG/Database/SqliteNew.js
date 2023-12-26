@@ -1,6 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 
-const databaseName = 'TestNew.db';
+const databaseName = 'Game.db';
 const databaseVersion = '1.0';
 
 

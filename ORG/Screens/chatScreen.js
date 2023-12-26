@@ -19,7 +19,7 @@ export default function ChatScreen() {
   const [currentName, setCurrentName] = useState(undefined);
   let [flatListItems, setFlatListItems] = useState([]);
   const [test,setTest]=useState(['hello wold']);
-  var i=0;
+ const [count,setCount]=useState(false)
   const courses = [
     "Full Stack Developement Program",
     "Python Automation Testing Program",
@@ -36,16 +36,16 @@ export default function ChatScreen() {
   const handleSendMessage = () => {
     sendMessage(message);
     setMessage(''); 
-  
-
-
   };
 
   useEffect(() => {
     // Connect to the Socket.io server
 
-
-
+console.log("1 UE")
+if(!count){
+  console.log("useEffect is working count ")
+  display();
+}
     socket.connect();
     // console.log("Messages stored in Array are here below  ") 
     // Listen for incoming messages
@@ -209,6 +209,7 @@ db.transaction((tx) => {
 
 
       socket.emit('chatMessage', message);
+      setCount(true)
       setMessage('');
    
   };
@@ -216,11 +217,98 @@ db.transaction((tx) => {
   const display = () => {
   // there function would just display the array content saved in SQLite database file  just for one time 
   //then it would disappear 
+console.log("ENTRING In display function ")
+db.transaction( (tx)=>{
+  tx.executeSql('SELECT * FROM messages',null,(txObj,resultSet)=>{
+    console.log("In Sqlite Database display function ")
+  setTest(resultSet.rows._array)
+  console.log(resultSet.rows._array)
+  }
+  )
+}
+)
+
+
+fb.transaction(tx => {
+  tx.executeSql('SELECT * FROM InMessage ', null,
+     (txObj, resultSet) =>{
+       setName(resultSet.rows._array),
+       console.log("in database  display function  ")
+    , console.log(resultSet.rows._array)
+  
+  },
+        // console.log('1.'),
+        // setTest(resultSet.rows._array)
+       
+    // setNames(test),
+     (txObj, error) => console.log(error)
+  );
+// console.log(names);
+});
+
+
+return(
+  <View>
+  <Text style={{color:'green'}}> 
+  This Following List is From FrontEnd
+</Text>
+<FlatList 
+style={{color:'red'}}
+data={test}
+renderItem={(e)=>{
+  return(
+     <View><Text>{e.index.id}</Text>
+  <Text>{e.item.name}</Text>
+  </View>
+  )
+}}
+/>
+
+<Text>
+  {'\n'}
+</Text>
+
+<Text style={{color:'green'}}> 
+  This Following List is From FrontEnd
+</Text>
+<FlatList 
+style={{color:'red'}}
+data={name}
+renderItem={(e)=>{
+  return(
+     <View><Text>{e.index.id}</Text>
+  <Text>{e.item.name}</Text>
+  </View>
+  )
+}}
+/>
+
+
+
+
+
+
+
+
+
+
+
+
+</View>
+)
+
+
+
+
+
   }
 
 
   return (
     <SafeAreaView style={{ margin: 10,marginTop:50 }}>
+
+    
+        
       <View style={styles.container}>
   
       </View>
@@ -286,6 +374,7 @@ renderItem={(e)=>{
   )
 }}
 />
+
 
     </SafeAreaView>
 

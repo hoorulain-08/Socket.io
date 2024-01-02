@@ -7,6 +7,9 @@ import ChatScreen from './Screens/chatScreen';
 import Login from './Screens/LogIn';
 import TestingChat from './Screens/TestingChat';
 import  FList from "./Screens/FList"
+import SignUp from './Screens/SignUp';
+import {PracticeProvider} from './Context/Context';
+import Home from './Screens/Home';
 // import { Provide,Practice } from './Context';
 // const ss=React.createContext();
 const Stack = createNativeStackNavigator();
@@ -35,16 +38,19 @@ function DetailsScreen() {
 export default function App() {
   return (
     //  <Provide>
+    // <PracticeProvider>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="ChatScreen">
-  <Stack.Screen name="ChatScreen" component={ChatScreen} />
+      <Stack.Navigator initialRouteName="Home">
+      <Stack.Screen name="Home" component={Home} />
+       <Stack.Screen name="ChatScreen" component={ChatScreen} />
       <Stack.Screen name="TestChat" component={TestingChat} />
-        <Stack.Screen name="LogIn" component={Login} />
-        <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="LogIn" component={Login} />
+       <Stack.Screen name='SignUp' component={SignUp}/>
+        <Stack.Screen name="HomeScreen" component={HomeScreen} />
        
       </Stack.Navigator>
     </NavigationContainer>
-    // </Provide>
+  //  </PracticeProvider>
    
   );
 }

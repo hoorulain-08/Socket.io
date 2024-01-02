@@ -2,8 +2,6 @@ import React from 'react';
 import { StyleSheet, Text, View, TextInput, Button, Platform,FlatList ,SafeAreaView} from 'react-native';
 // import { createStackNavigator } from '@react-navigation/native';
 import SocketIOClient from 'socket.io-client';
-// const Stack = createStackNavigator();
-// import * as SQLite from 'expo-sqlite';
 import { useState, useEffect } from 'react';
 import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
@@ -19,6 +17,7 @@ export default function ChatScreen() {
   const [currentName, setCurrentName] = useState(undefined);
   let [flatListItems, setFlatListItems] = useState([]);
   const [test,setTest]=useState(['hello wold']);
+  // const avdId = DeviceInfo.getSerialNumber();
  const [count,setCount]=useState(false)
   const courses = [
     "Full Stack Developement Program",
@@ -44,6 +43,7 @@ export default function ChatScreen() {
 console.log("1 UE")
 if(!count){
   console.log("useEffect is working count ")
+
   display();
 }
     socket.connect();
@@ -53,8 +53,8 @@ if(!count){
    // setMessages((prevMessages) => [...prevMessages, message]);
       //  console.log("Messages stored in Array are here below  ") 
       // console.log(messages)
-      console.log("Message recevied from Backend are below ")
-      console.log(message)
+   //   console.log("Message recevied from Backend are below ")
+   //   console.log(message)
 
 // Sqlite Database
 db.transaction((tx) => {
@@ -72,13 +72,10 @@ db.transaction((tx) => {
     db.transaction(tx => {
       tx.executeSql('SELECT * FROM messages ', null,
          (txObj, resultSet) =>{ setTest(resultSet.rows._array)
-        // , console.log(resultSet.rows._array)
+  
       
       },
-            // console.log('1.'),
-            // setTest(resultSet.rows._array)
-           
-        // setNames(test),
+      
          (txObj, error) => console.log(error)
       );
 // console.log(names);
@@ -86,19 +83,9 @@ db.transaction((tx) => {
 
   });
 
- 
-
-
-/////
-
 
     });
 
-
-
-
-    
-  
     // Clean up the socket connection when the component unmounts
     return () => {
       socket.disconnect();
@@ -106,36 +93,7 @@ db.transaction((tx) => {
   }, []);
 
 
-
-
-// useEffect(()=>{  
-//   console.log("useEffect.3")
-
-//  db.transaction(tx => {
-//         tx.executeSql('SELECT * FROM messages', null,
-//           // (txObj, resultSet) => setNames(resultSet.rows._array),
-//             (txObj, resultSet) =>setTest(resultSet.rows._array),
-//               // console.log('selec from NewKiwi new table '),
-//               // setTest(resultSet.rows._array)
-//           // setNames(test),
-//            (txObj, error) => console.log(error)
-//         );
-//   // console.log(names);
-//       });
-
-  
-// }
-// )
-
-
-
-
-
-
   const sendMessage = () => {
-    // if (message) {
-    //   // This below message is used to send the message from anyside
-    //   socket.emit('chat message', message, () => setMessage(''));
       fb.transaction(tx => {
         tx.executeSql(
           `INSERT INTO InMessage (name) values (?)`,
@@ -161,52 +119,7 @@ db.transaction((tx) => {
            (txObj, error) => console.log(error)
         );
   // console.log(names);
-      });
-  //   db.transaction(tx => {
-  //     console.log("Here is I am in sendMessage SQL lite Database")
-  //       tx.executeSql('SELECT * FROM messages ', null,
-  //          (txObj, resultSet) =>{
-  //           setMessages((prevMessages) => [...prevMessages, resultSet.rows._array]),
-  //             console.log("Messages Saved in Database are here below"),
-  //            // console.log(resultSet.rows._array)
-  //           console.log(' Sqlite daba select from messages new table '),
-  //          // console.log(messages)
-  //           console.log("saving messages below in show ")
-  //           test=[...messages]
-  //           setShow([test])
-  //           console.log("show messages are here below")
-  //           console.log(show)
-  //           },
-  //             // setTest(resultSet.rows._array)
-  //         // setNames(test),
-  //          (txObj, error) => console.log(error)
-  //       );
-  // // console.log(names);
-  //     });
-
-
-
-//   fb.transaction(tx => {
-//     tx.executeSql('SELECT * FROM InMessage ', null,
-//        (txObj, resultSet) =>{ setName(resultSet.rows._array),
-//         console.log("fb data table fetched below")
-//       , console.log(resultSet.rows._array)},
-//           console.log('1.'),
-//           // setTest(resultSet.rows._array)
-         
-//       // setNames(test),
-//        (txObj, error) => console.log(error)
-//     );
-// // console.log(names);
-//   });
-
-
-
-
-
-
-
-
+      })
 
       socket.emit('chatMessage', message);
       setCount(true)
@@ -215,8 +128,6 @@ db.transaction((tx) => {
   };
 
   const display = () => {
-  // there function would just display the array content saved in SQLite database file  just for one time 
-  //then it would disappear 
 console.log("ENTRING In display function ")
 db.transaction( (tx)=>{
   tx.executeSql('SELECT * FROM messages',null,(txObj,resultSet)=>{
@@ -296,10 +207,6 @@ renderItem={(e)=>{
 
 </View>
 )
-
-
-
-
 
   }
 

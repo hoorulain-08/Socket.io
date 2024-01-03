@@ -8,12 +8,31 @@ const cors=require('cors');
 const bcrypt = require("bcrypt");
 const { table } = require('console');
 const jwt = require("jsonwebtoken");
+const ioC = require('socket.io-client');
 app.use(express.json());
 app.use(cors());
+const { Sequelize } = require('sequelize');
 
-
+const Socket = ioC('http://192.168.70.158:3000'); //this URL of socket io server  this is URL 
 let sql;
 //connect to DB
+const sequelize = new Sequelize('node_db', 'root','root123', {
+  host: 'localhost',
+  dialect: 'mysql',
+});
+
+
+
+
+// const User = sequelize.define('User', {
+//   email: Sequelize.STRING,
+//   // age: Sequelize.INTEGER,
+// })
+
+
+
+let test=[]
+
 const dbl=new sqlite.Database('./test.db',sqlite.OPEN_READWRITE,(err)=>{
 if(err) return console.error(err.message)
 })
@@ -47,50 +66,28 @@ app.get('/', function(req, res){
 });
 
 io.on('connection', function(socket){
-  console.log('a user connected');
-  socket.on('chat message', function(msg){
-    console.log('message: ' + msg);
-    io.emit('chat message', msg);
-  });
+ // console.log('Client connected');
+ // console.log(socket.id)
+  socket.on('chatMessage', (message) => {
+   // console.log('Received message:', message);
+    // Handle the message
+socket.on('privateMessage',(data)=>{
+  const { rece, message,sender} = data;
+io.to(rece).emit('newPrivateMessage', message)
+})
+    // Broadcast the message to other clients
+    io.emit('chatMessage', message);
 });
-// app.post('/send',(req,res)=>{
-//   const id=req.body.id;
-//   const name_p=req.body.name_p;
-//   const email=req.body.email;
-//   const password_P=req.body.password_P;
-// //insert  registrtion table in database
-//   db.query('insert into reg values(?,?,?,?)',[id,name_p,email,password_P],(err,result)=>{
-//        if(err){
-//            console.log(err);
-//         }else{
-//            res.send("POSTED")
-//         }
-
-//    })
 
 
-//   // const email=req.body.email;
-
-
-//   //  sql='INSERT INTO intStorage(fname,lname,username) VALUES (?,?,?)';
-//   //  dbl.run(sql,["mom","dad","kids"],(err)=>{
-//   //    if(err) return console.error(err.message);
-//   //  })
-   
-//   //  sql='SELECT * from intStorage';
-//   //  dbl.all(sql,[],(err,rows)=>{
-//   //    if(err) return console.error(err.message);
-//   //    rows.forEach((row)=>{
-//   //      console.log(row)
-   
-//   //    })
-//   //  })
-
-
-// })
-
-
-
+// Socket.on('connect', () => {
+//   console.log('Connected to Socket.IO server');
+//   console.log(Socket.id)
+// });
+socket.on('disconnect', () => {
+  console.log('Client disconnected');
+})
+});
 
 
 app.post('/send',(req,res)=>{
@@ -127,6 +124,71 @@ console.log('entered In API')
     res.send("Form submitted");
 
 })
+
+
+
+app.post('/searchM',(req,res)=>{
+
+
+  console.log('request  u received from Frontend is = ')
+  // console.log(req.email);
+ // console.log(req)
+  const country = req.body.email;
+  // const id = req.body.LoginId;
+  console.log(country)
+  const query = `SELECT * FROM reg WHERE country = '${country}'`;
+  
+  // Execute the query
+  db.query(query, (error, results) => {
+    if (error) {
+      console.error('Error executing the query:', error);
+      return;
+    }
+  
+    else{
+
+        console.log('Query results:');
+        console.log(results)
+// test[0]=results[0]
+// console.log("test is below")
+// console(test[0])
+
+
+
+
+
+
+
+
+
+
+    res.send(results)
+    
+  }
+  });
+  
+ 
+  // Close the database connection
+  // connection.end((error) => {
+  //   if (error) {
+  //     console.error('Error closing the database connection:', error);
+  //     return;
+  //   }
+  //   console.log('Database connection closed');
+  // });
+
+})
+
+
+
+
+
+
+
+
+
+
+
 
 app.post('/login',(req,res)=>{
 console.log('request from frontend fo ligin is = ')
@@ -184,6 +246,6 @@ db.query("SELECT * FROM reg WHERE name = ? ", [name], function(error, results, f
 
 
 
-server.listen(4000, function(){
-  console.log('listening on *:4000');
+server.listen(3000, function(){
+  console.log('listening on *:3000');
 });

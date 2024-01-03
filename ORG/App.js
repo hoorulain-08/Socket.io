@@ -8,7 +8,7 @@ import Login from './Screens/LogIn';
 import TestingChat from './Screens/TestingChat';
 import  FList from "./Screens/FList"
 import SignUp from './Screens/SignUp';
-import {PracticeProvider} from './Context/Context';
+// import {PracticeProvider} from './Context/Context';
 import Home from './Screens/Home';
 // import { Provide,Practice } from './Context';
 // const ss=React.createContext();

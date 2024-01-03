@@ -7,7 +7,7 @@ export default function Home() {
   const [temp,setTemp]=useState(false)
 //  let emailNew='bengladesh';
   let LoginId=3; //this is just supposed login id which actually would be obtain through ContextApi  
-let imp=GetData()
+let imp=GetData('pakistan')
 
 let j=false;
 

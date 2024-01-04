@@ -3,9 +3,7 @@ import { View, Text } from 'react-native'
 
 
  export const GetData=(props)=> {
-    let emailNew=props;
-    console.log
-    let LoginId=2;
+    let emailNew=props
     const [testE,setTestE]=useState([])
     useEffect(()=>{
 FetchApi()
@@ -28,9 +26,9 @@ FetchApi()
               
             )
           })
-          console.log("GetData from above is here ")
+      //   console.log("GetData from above is here ")
       const    y = await res.json();
-      console.log(y)
+    //   console.log(y)
     setTestE(y)
             
         }

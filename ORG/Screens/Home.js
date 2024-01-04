@@ -1,14 +1,19 @@
 import { View, Text,Button } from 'react-native'
-import React, { useEffect ,useState} from 'react'
+import React, { useEffect ,useState,useContext} from 'react'
 import { GetData } from './GetData'
+import { ContextApi } from '../App';
 export default function Home() {
-
+  const resp=useContext(ContextApi)
   const [test,setTest]=useState([])
   const [temp,setTemp]=useState(false)
 //  let emailNew='bengladesh';
-  let LoginId=3; //this is just supposed login id which actually would be obtain through ContextApi  
-let imp=GetData('pakistan')
-
+  let LoginId=resp.id;
+  console.log("LogIn id in Home file is = " + LoginId)
+  
+  //this is just supposed login id which actually would be obtain through ContextApi  
+let imp=GetData('pakistan')// countries  would also be replaced through context Api 
+console.log("Home file is here below")
+console.log(imp)
 let j=false;
 
 
@@ -28,6 +33,7 @@ function disp(){
     if(LoginId==imp[i].id){
   console.log('entering IF of the loop LogIn id is = ' +LoginId +"test and test[i] is = "+imp[i].id)
       setTest([...test,imp[i]])
+      console.log(test)
       j=true
     }
 

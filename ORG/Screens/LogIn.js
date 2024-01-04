@@ -6,58 +6,49 @@ import {
   StyleSheet,
   Text
 } from 'react-native'
-import { useState } from 'react'
+import { useState ,useContext} from 'react'
+import { ContextApi } from '../App';
 export default function  Login({navigation}){
- 
+  const resp=useContext(ContextApi)
   const [username_n,setUsername]=useState();
   const [password_n,setPassword]=useState();
-
+let x;
 
   async function LoginGo  ()  {
-    console.log('value recevied from  the form is prop is ')
+   // console.log('value recevied from  the form is prop is ')
     // console.log(username_n )
 
- let res=fetch("http://192.168.70.158:3000/login", {
-  method: "POST",
-  headers:{
-            Accept:'application/json',
-            'content-type':'application/json'
-          },
-  body: JSON.stringify({
-
+    const res= await fetch('http://192.168.70.158:3000/login',{
+      method:'POST',
+      headers:{
+        Accept:'application/json',
+        'content-type':'application/json'
+      },
+      body:JSON.stringify({
         name:username_n,
-    //   email:email_n,
-    password:password_n,
-    // phone:phone_n
-   }),
-}).then((response)=>{
-    console.log('response is here below = ')
-    let x=response.status
-    console.log({x})
-    if(x==200)
-    {
-        navigation.navigate('ChatScreen');
+        password:password_n,
+      }
+        
+      )
+    }).then(async(response)=>{
+      // console.log("response from frontned status is ")
+      // console.log(response.status)
+     x= response
+      // console.log(response.)
+    })
+    const    y = await x.json();
+console.log("response id  is below ");
+console.log(x.status)
+    if(x.status==200)
+    {  
+        resp.setId(y.id)
+        // console.log("this value of y in if is below")
+        // console.log(y.id)
+
+       navigation.navigate('Home');
     }else if(x==400){
         alert('Invalid Username or Password')
     }
-    
-})
-// let resJson = await res.json();
-// if (resJson.status == 200) {
-//   // setName("");
-//   // setEmail("");
-//   setMessage("User Login successfully");
-// } else {
-//   setMessage("Some error occured");
-// }
-
-
-    // try {
-    //   // here place your signup logic
-    //   console.log('user successfully signed up!: ')
-    // } catch (err) {
-    //   console.log('error signing up: ')
-    // }
   }
  
 

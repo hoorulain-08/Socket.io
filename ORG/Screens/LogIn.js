@@ -45,7 +45,7 @@ console.log(x.status)
         // console.log("this value of y in if is below")
         // console.log(y.id)
 
-       navigation.navigate('Home');
+       navigation.navigate('Main');
     }else if(x==400){
         alert('Invalid Username or Password')
     }

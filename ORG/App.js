@@ -11,6 +11,8 @@ import SignUp from './Screens/SignUp';
 import {PracticeProvider} from './Context/Context';
 import Home from './Screens/Home';
 import { createContext, useState } from "react";
+import Main from './Main panel/Main';
+import Wall from './Screens/Wall';
 // import { Provide,Practice } from './Context';
 // const ss=React.createContext();
 const Stack = createNativeStackNavigator();
@@ -27,14 +29,35 @@ const [msg,setMsg]=useState();
     // <PracticeProvider>
     <ContextApi.Provider value={{id,setId,msg,setMsg}}>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="LogIn">
-              <Stack.Screen name="LogIn" component={Login} />
-    
-      <Stack.Screen name="Home" component={Home} />
-       <Stack.Screen name="ChatScreen" component={ChatScreen} />
-      <Stack.Screen name="TestChat" component={TestingChat} />
-       <Stack.Screen name='SignUp' component={SignUp}/>
-        <Stack.Screen name="HomeScreen" component={HomeScreen} />
+
+  
+      <Stack.Navigator initialRouteName="LogIn"
+       screenOptions={{
+                headerShown:false,
+                statusBarColor:'#6facbf'
+              }}
+      >
+         
+              <Stack.Screen name="LogIn" component={Login}                                                                                                                                                                                                                                                                                                                     
+
+screenOptions={{
+ 
+  statusBarColor:'#6facbf'
+}}
+              />
+          <Stack.Screen  name='Main' component={Main}
+screenOptions={{
+ 
+  statusBarColor:'#6facbf'
+}}
+
+          />     
+       <Stack.Screen name='SignUp' component={SignUp}
+        screenOptions={{
+          headerShown:false
+        }}/>
+      
+      
        
       </Stack.Navigator>
     </NavigationContainer>

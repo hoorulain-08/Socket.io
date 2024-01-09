@@ -1,27 +1,2 @@
 hoor:123456
 nigar:1234
-
-
-
-
-Upon successful authentication, assign a unique identifier or role to the user, indicating their access level or permissions.
-
-
-Before executing a query or accessing data, verify that the user has the appropriate permissions to perform the operation.
-Implement a mechanism to filter records based on the user's identifier or role to ensure they can only view or modify their own data.
-
-Use the sender ID to identify the specific sender's device or session.
-Use the sender ID to identify the specific sender's device or session. You can store the mapping of sender IDs to device information or session details in a data structure or database.
-
-Determine the appropriate destination to send the message based on the sender's ID. This could be the specific device or session associated with that sender.
-
-Handle any potential errors or cases where the sender's device or session is not available or offline.
-
-Configure the session middleware with a session store, such as express-session's default in-memory store or a more robust store like Redis or MongoDB. This allows session data to persist across server restarts.
-Generate a unique session ID for each user and associate it with their socket connection.
-
-If you're using a SQL database, you can create a table to associate user IDs with socket IDs.
-
-
-Generate a unique session ID for each user and associate it with their socket connection.
-

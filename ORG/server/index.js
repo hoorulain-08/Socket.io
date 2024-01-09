@@ -149,19 +149,6 @@ app.post('/searchM',(req,res)=>{
 
         console.log('Query results:');
         console.log(results)
-// test[0]=results[0]
-// console.log("test is below")
-// console(test[0])
-
-
-
-
-
-
-
-
-
-
     res.send(results)
     
   }
@@ -195,23 +182,18 @@ console.log('request from frontend fo ligin is = ')
 console.log(req.body.name);
 console.log(req.body.password);
 const name=req.body.name;
-db.query("SELECT * FROM reg WHERE name = ? ", [name], function(error, results, fields) {
+db.query("SELECT * FROM reg WHERE name = ? ", [name], function(error, results) {
   if(error) throw error;
   else { 
 
     console.log('Entering else statement')
       if(results.length > 0) { 
-        // console.log('password is here down below = ')
-        // console.log(req.body.password)
-        // console.log('result[0].password_P is here down below ')
-        // console.log( results[0].password)
+      
       bcrypt.compare(req.body.password, results[0].password, function(err, result) {
-
-        // console.log( bcrypt.compare(req.body.password, results[0].password) )
-        // console.log('result is here  below = ')
-        // console.log(result)
        if(result) {
-         return res.send({ message: "Login Successful" });
+       // console.log("results are here below = ")
+         return res.status(200).send({ id: results[0].id });
+      
        }
        else {
          return res.status(400).send({ message: "Invalid Password" });

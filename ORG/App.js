@@ -13,6 +13,9 @@ import Home from './Screens/Home';
 import { createContext, useState } from "react";
 import Main from './Main panel/Main';
 import Wall from './Screens/Wall';
+import MyForm from './Form/FormHandling';
+import TestNav from './Screens/TestNav';
+
 // import { Provide,Practice } from './Context';
 // const ss=React.createContext();
 const Stack = createNativeStackNavigator();
@@ -31,12 +34,49 @@ const [msg,setMsg]=useState();
     <NavigationContainer>
 
   
-      <Stack.Navigator initialRouteName="LogIn"
+      <Stack.Navigator initialRouteName="Form"
        screenOptions={{
                 headerShown:false,
                 statusBarColor:'#6facbf'
               }}
       >
+
+<Stack.Screen name="Form" component={MyForm}                                                                                                                                                                                                                                                                                                                     
+
+screenOptions={{
+ 
+  statusBarColor:'#6facbf'
+}}
+ />
+
+<Stack.Screen  name='TestNav' component={TestNav}
+screenOptions={{
+ 
+  statusBarColor:'#6facbf'
+}}
+/> 
+
+{/* <Stack.Screen name="Form" component={MyForm}                                                                                                                                                                                                                                                                                                                     
+
+screenOptions={{
+ 
+  statusBarColor:'#6facbf'
+}}
+ /> */}
+
+    
+{/* rendering this wall component for testing purpose otherwise its alreday there in main.js */}
+<Stack.Screen  name='wall' component={Wall}
+screenOptions={{
+ 
+  statusBarColor:'#6facbf'
+}}
+
+          />  
+
+
+
+
          
               <Stack.Screen name="LogIn" component={Login}                                                                                                                                                                                                                                                                                                                     
 

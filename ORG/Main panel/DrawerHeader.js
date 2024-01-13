@@ -24,7 +24,7 @@ const DrawerHeader = (props )=> {
             {...props}
             contentContainerStyle={{backgroundColor: '#6facbf'}}>
             <ImageBackground
-              source={require('../assets/drawerBack.png')}
+              source={require('../assets/users/user-4.jpg')}
               style={{padding: 20}}>
               <Image
                 source={require('../assets/users/user-3.jpg')}

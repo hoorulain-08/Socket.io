@@ -44,9 +44,17 @@ fetch('http://192.168.70.158:3000/send',{
 })
     
     //  console.log('user successfully signed up!: ')
-    } catch (err) {
+    } 
+    
+    
+    
+    catch (err) {
       console.log('error signing up: ')
     }
+
+
+
+
   }
  
 

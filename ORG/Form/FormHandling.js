@@ -9,17 +9,44 @@ import {
   StyleSheet,
   Button
 } from 'react-native';
-import React, {useRef, useState} from 'react';
+import React, {useContext, useRef, useState} from 'react';
 import { Calculation } from '../Data/Calculation';
 import { UAE } from '../Data/Data';
 import { countries } from '../Components/Countries';
 import {style} from '../Style/style'
 import { Formik } from 'formik';
- export  var TestExp={test:'',val:''}
+import { ContextApi } from '../App';
+import { MyContext } from '../ContextApi/Context';
+ export  var TestExp=[{pID:0,ToCountry:'',FromCountry:'',price:'',post:'',wgt:0}]
+ 
  import { useNavigation } from '@react-navigation/native';
+
+//faetch id of sender from login page image in Data base and usename from loginID
+//  const resp=useContext(ContextApi);
+/******  id would be fetched from login information and then userName and userimage would be fetched from registration table named 
+ * reg in sql database       ,*/
+
+
 const FormFormik = ({Navigation}) => {
+
+    let idLog=useContext(ContextApi);
+    let sendNew=useContext(MyContext);
+
+   // console.log(sendNew.PostValue.pID)
+    // const newValue = [{
+    //   pID: 1,
+    //   ToCountry: 'CountryA',
+    //   FromCountry: 'CountryB',
+    //   price: 10,
+    //   post: 'Some post',
+    //   wgt: 5,
+    //   name: 'John Doe',
+    //   image: 'image-url'
+    // }];
+
+  
   const navigation = useNavigation(); 
-  const [rate,setRate]=useState()
+  const [rate,setRate]=useState();
   const [confirm,setConfirm]=useState(false);
   const [search, setSearch] = useState('');
   const [clicked, setClicked] = useState(false);
@@ -29,9 +56,10 @@ const FormFormik = ({Navigation}) => {
   const [selectedCountry, setSelectedCountry] = useState('');
  const[show,setShow]=useState(false)
   const searchRef = useRef();
+   const updatedPostValue = { ...sendNew.PostValue[0]};
   const onSearch = search => {
     if (search !== '') {
-      let tempData = data.filter(item => {
+      let tempData = data.filter((item) => {
         return item.country.toLowerCase().indexOf(search.toLowerCase()) > -1;
       });
       setData(tempData);
@@ -40,10 +68,13 @@ const FormFormik = ({Navigation}) => {
     }
   };
   function GoNav(){
-    navigation.navigate('TestNav');
+    console.log("Go to navigation page Send to  countires  ");
+    console.log(TestExp)
+    navigation.navigate('TestNav',{TestExp});
   }
   function GoHome(){
-    navigation.navigate('wall', { TestExp });
+    navigation.navigate('wall');
+    // navigation.navigate('wall', { TestExp });
   }
  
   return (
@@ -54,7 +85,7 @@ const FormFormik = ({Navigation}) => {
 <View  style={style.confSTView}>
 <Text style={style.ConfTxt}>
  Proposed rate  for the weight of your  package   is </Text>
- <Text  style={style.confRate}>{rate}AED  {'\n'}</Text>
+ <View style={{marginLeft:8}}><Text  style={style.confRate}>{rate}AED  {'\n'}</Text></View>
 <Text style={style.ConfTxtD}>
   Will you pay this rate the this Carrier person talking your Parcel
 </Text>
@@ -93,14 +124,35 @@ const FormFormik = ({Navigation}) => {
 <Formik
       initialValues={{ name: '',search:'',weight:0 ,test:'',country:''}}
       onSubmit={(values) => {
-        console.log('submitting the definite values below ')
-        console.log(values);
-        console.log("Country value is =  ")
-        console.log(selectedCountry)
-        TestExp.test=selectedCountry;
-        TestExp.val=values.name;
-        console.log(TestExp);
-        // console.log(UAE[0][1])
+        // console.log('submitting the definite values below ')
+        // console.log(values);
+        // console.log("Country value is =  ")
+        // console.log(selectedCountry);
+          TestExp[0].pID=5;
+        TestExp[0].ToCountry=selectedCountry;
+        TestExp[0].post=values.name;
+        TestExp[0].wgt=values.weight;
+        TestExp[0].FromCountry=coun;
+     //   TestExp[0].pID=idLog.id;
+      
+        // console.log("Login Id in FomHandling is below ")
+        // console.log(pID);
+ 
+
+        updatedPostValue.pID = idLog.id;
+        updatedPostValue.ToCountry = selectedCountry;
+        updatedPostValue.FromCountry = coun;
+        // Price calculation is still pending
+        updatedPostValue.post = values.name;
+        updatedPostValue.wgt = values.weight;
+        updatedPostValue.name = idLog.nam;
+        updatedPostValue.image = idLog.image;
+
+       
+
+
+
+
         
         if(values.weight>10 || values.weight<=0 ){
           alert("weight  can not be send above 10kg and less than 0 kg ");
@@ -113,7 +165,11 @@ const FormFormik = ({Navigation}) => {
        var    rat=Calculation(cel);
            setRate(rat)
              console.log("ret is here = " + rat)
-             
+             updatedPostValue.price = rat
+              TestExp[0].price=rat
+             console.log('tESTExxp IS HERE Below');
+             console.log(TestExp)
+             sendNew.setPost([updatedPostValue]);
         setConfirm(true)
      
           
@@ -202,15 +258,6 @@ const FormFormik = ({Navigation}) => {
               );
             }}
           />
-
-
-
-
-
-
-
-
-          
         </View>
       ) : null}
     </View>

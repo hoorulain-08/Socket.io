@@ -10,6 +10,7 @@ import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerI
 import { style } from '../Style/style'
 import DrawerHeader from './DrawerHeader'
 import Wall from '../Screens/Wall'
+import MyOffers from '../Screens/MyOffers'
 const Drawer = createDrawerNavigator();
 
 export default function Main() {
@@ -49,7 +50,17 @@ options={{
 }}
 />
 
+<Drawer.Screen name='offer' component={MyOffers}
 
+screenOptions={{
+  headerShown:true,
+}} 
+options={{
+  headerStyle: {
+    backgroundColor: '#6facbf'
+}
+}}
+/>
 
 
 

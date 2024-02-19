@@ -2,7 +2,7 @@
 // import {React} from "react";
 // import * as React from 'react';
 import { createContext ,useState} from "react";
-const Practice= createContext();
+const Practice = createContext();
 
 
 const Provide=({childern})=>{
@@ -14,6 +14,7 @@ return(
     </Practice.Provider>
 
 )
+
 }
 export {Practice,Provide};
 

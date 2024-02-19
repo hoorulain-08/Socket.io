@@ -214,26 +214,28 @@ TxtSty:{
 ConfTxt :{
   color:'black',
   fontWeight:'bold',
-  fontSize:20
+  fontSize:20,
+  marginLeft:20
 },
 ConfTxtD :{
   color:'black',
   fontWeight:'bold',
   fontSize:20,
-  marginTop:10
+  marginTop:10,
+  marginLeft:20
 },
 confRate:{
 marginLeft:60,
-  marginTop:60,
+    marginTop:60,
   
-color:'red',
-fontWeight:'bold',
-fontSize:30,
-backgroundColor:'#6facbf',
+    color:'red',
+    fontWeight:'bold',
+    fontSize:30,
+    backgroundColor:'#6facbf',
 
-borderWidth:1,
+    borderWidth:1,
     borderColor:'black',
-    padding:10,
+    padding:7,
     borderRadius:3,
     width:160,
     height:50,

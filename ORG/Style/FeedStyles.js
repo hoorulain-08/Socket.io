@@ -53,7 +53,7 @@ export const PostText = styled.Text`
  
     padding-left: 15px;
     padding-right: 15px;
-    margin-bottom: 15px;
+  
 `;
 
 export const PostImg = styled.Image`

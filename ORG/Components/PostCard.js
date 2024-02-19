@@ -30,8 +30,9 @@ import {TouchableOpacity,ScrollView} from 'react-native';
 const PostCard = ({item, onDelete, onPress}) => {
 //  const {user, logout} = useContext(AuthContext);
   const [userData, setUserData] = useState(null);
-  console.log("userName is here download below = ")
-console.log(item.post);
+  const [show,setShow]=useState(null)
+//   console.log("userName is here download below = ")
+// console.log(item.post);
 // setUserData(item.userName)
   likeIcon = item.liked ? 'heart' : 'heart-outline';
   likeIconColor = item.liked ? '#2e64e5' : '#333';
@@ -80,18 +81,18 @@ console.log(item.post);
   return (
     
     <ScrollView>
-    <Card key={item.id}>
+    <Card key={item.pID}>
        
       <UserInfo>
       <UserImg
-         source={item.userImg}
+         source={{uri :item.image}}
         />
         <UserInfoText>
           <TouchableOpacity onPress={onPress}>
             <UserName>
             
-            {item.userName}
-              hello 
+            {item.name}
+          
             </UserName>
           </TouchableOpacity>
           {/* <PostTime>{moment(item.postTime.toDate()).fromNow()}</PostTime> 
@@ -101,7 +102,17 @@ console.log(item.post);
 
         </UserInfoText>
       </UserInfo>
-      <PostText>{item.post}</PostText>
+      <PostText>{item.post} {'\n'} {'\n'}</PostText>
+       
+      <PostText>ToCountry : {'\n'} {'\n'}</PostText>
+      <PostText>{item.ToCountry}{'\n'} {'\n'}</PostText>
+      <PostText>FromCountry : {'\n'} {'\n'}</PostText>
+      <PostText>{item.FromCountry}{'\n'} {'\n'}</PostText>
+      <PostText>Weight : {'\n'} {'\n'}</PostText>
+      <PostText>{item.wgt}{'\n'} {'\n'}</PostText>
+      <PostText>Price : {'\n'} {'\n'}</PostText>
+      <PostText>{item.price}{'\n'} {'\n'}</PostText>
+      
       <InteractionWrapper>
             <Interaction onPress={offer}>
          <TouchableOpacity  style={style.Btn}>

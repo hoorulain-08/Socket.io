@@ -1,30 +1,96 @@
+import React from 'react';
+import { View, Text, Button, StyleSheet, FlatList } from 'react-native';
+import {
+  Container,
+  Card,
+  UserInfo,
+  UserImgWrapper,
+  UserImg,
+  UserInfoText,
+  UserName,
+  PostTime,
+  MessageText,
+  TextSection,
+} from '../Style/MessageStyles';
+import { useNavigation } from '@react-navigation/native';
+const Messages = [
+  {
+    id: '1',
+    userName: 'Jenny Doe',
+    userImg: require('../assets/users/user-3.jpg'),
+    messageTime: '4 mins ago',
+    messageText:
+      'Hey there, this is my test for a post of my social app in React Native.',
+  },
+  {
+    id: '2',
+    userName: 'John Doe',
+    userImg: require('../assets/users/user-1.jpg'),
+    messageTime: '2 hours ago',
+    messageText:
+      'Hey there, this is my test for a post of my social app in React Native.',
+  },
+  {
+    id: '3',
+    userName: 'Ken William',
+    userImg: require('../assets/users/user-4.jpg'),
+    messageTime: '1 hours ago',
+    messageText:
+      'Hey there, this is my test for a post of my social app in React Native.',
+  },
+  {
+    id: '4',
+    userName: 'Selina Paul',
+    userImg: require('../assets/users/user-6.jpg'),
+    messageTime: '1 day ago',
+    messageText:
+      'Hey there, this is my test for a post of my social app in React Native.',
+  },
+  {
+    id: '5',
+    userName: 'Christy Alex',
+    userImg: require('../assets/users/user-7.jpg'),
+    messageTime: '2 days ago',
+    messageText:
+      'Hey there, this is my test for a post of my social app in React Native.',
+  },
+];
 
-function SignUp() {
-    const [isModalVisible, setModalVisible] = useState(false);
-  
-    const toggleModal = () => {
-      setModalVisible(!isModalVisible);
-    };
-  
+const ModalNew = ({navigation}) => {
+  const nav=useNavigation();
     return (
-      <View>
-        <Button title="Open Modal" onPress={toggleModal} />
-        <Text style={styles.modal}>This is a modal</Text>
-  {/* 
-         <Modal isVisible={isModalVisible}>
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text style={styles.modal}>This is a modal</Text>
-            <Button title="Close Modal" onPress={toggleModal} />
-          </View>
-        </Modal>  */}
-      </View>
+      <Container>
+        <FlatList 
+          data={Messages}
+          keyExtractor={item=>item.id}
+          renderItem={({item}) => (
+            <Card onPress={() => nav.navigate('chat', { userName: item.userName,
+             userImg: item.userImg ,})}>
+              <UserInfo>
+                <UserImgWrapper>
+                  <UserImg source={item.userImg} />
+                </UserImgWrapper>
+                <TextSection>
+                  <UserInfoText>
+                    <UserName>{item.userName}</UserName>
+                    <PostTime>{item.messageTime}</PostTime>
+                  </UserInfoText>
+                  <MessageText>{item.messageText}</MessageText>
+                </TextSection>
+              </UserInfo>
+            </Card>
+          )}
+        />
+      </Container>
     );
-  };
-  
-  export default SignUp;
-  
-  
-  
-  
-  
-  
+};
+
+export default ModalNew;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1, 
+    alignItems: 'center', 
+    justifyContent: 'center'
+  },
+});

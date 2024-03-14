@@ -139,7 +139,7 @@ app.get('/image/:id', (req, res) => {
 console.log("the image Id is below =  ")
 console.log(id)
   // Prepare the SQL query
-  const query = 'SELECT image FROM reg WHERE id = ?';
+  const query = 'SELECT name,image FROM reg WHERE id = ?';
   const values = [id];
 
   // Execute the SQL query
@@ -176,7 +176,7 @@ app.get('/imageTest/:id', (req, res) => {
 console.log("the image Id in reg is below =  ")
 console.log(id)
   // Prepare the SQL query
-  const query = 'SELECT image FROM reg WHERE id = ?';
+  const query = 'SELECT name,image FROM reg WHERE id = ?';
   const values = [id];
 
   // Execute the SQL query
@@ -193,14 +193,20 @@ console.log(id)
     }
 
 
-    console.log("result of image  from reg is below")
-    console.log(results)
+    console.log("result of name of image from reg is below")
+    console.log(results[0].name)
     // Get the image data from the query results
     const imageBuffer = results[0].image;
 console.log("imageBuffer from reg  is below ")
 console.log(imageBuffer)
     // Set the appropriate headers for the image response
     res.setHeader('Content-Type', 'image/jpeg');
+    const name=results[0].name;
+  
+const resp={
+imageBuffer,
+name
+}
 
     // Send the image buffer as the response
     res.send(imageBuffer);
@@ -212,12 +218,6 @@ console.log(imageBuffer)
 
 
 });
-
-
-
-
-
-
 
 
 app.post('/send',(req,res)=>{
@@ -430,107 +430,73 @@ app.get('/posts', (req, res) => {
 
 
 
+app.post('/offers',(req,res)=>{
+  let sendId=req.body.sendId;
+  let recvId=req.body.recvId;
+  let NewOffer=req.body.NewOffer;
+
+const query='insert into offer (sendId,recvId,NewOffer) VALUES (?,?,?)'
+  db.query(query,[sendId,recvId,NewOffer],(err,result)=>{
+    if(err){
+      console.log("error in saving the values in offer ")
+     res.status(500).send('Error in saving values')
+     return;
+    }
+
+res.status(200).send('values saved')
+
+  })
+})
 
 
 
 
 
+app.post('/GetOffer',(req,res)=>{
+const recvId=req.body.recvId;
 
 
+const query =`SELECT * from offer where recvId='${recvId}'`
 
-function test(prop){
- // console.log("props is below")
- //  console.log(prop);
-  //  console.log(prop[1].RowDataPacket.pID);
-let getId=[];
-let temp=[]
-for(let i=0; i<prop.length;i++){
-
- getId[i]=prop[i].pID;
-//console.log(getId[i])
-
-
-}
-console.log("value of getId is below")
-console.log(getId[0])
-for(let i=0; i<prop.length;i++){
-
- const query=`select name,image from reg WHERE id= ${getId[i]} `
-
- db.query((query),(error,result)=>{
-if(error){
-  console.error('Error Fetching data ',error)
-}
-else{
-  // console.log("result is below in test ")
-  // console.log(result);
-  if(result.length>0){
-    console.log("temp is below down = if result.length>0 ")
-   temp.push(2);
-
-   console.log(temp[i])
-  // console.log("vale of i is below ")
-  // console.log(i);
+db.query(query,(err,result)=>{
+  if(err){
+    console.error('Error fetching offers:', error);
+    res.status(500).json({ error: 'An error occurred while fetching countries' });
   }
-  console.log("vale of i is below ")
-  console.log(temp[i])
-  // 
- return result 
-}
-console.log("hi there i am outside api  ")
- console.log(temp[0])
-// 
- })
-//  
-//  for(let j=0;j<temp.length;j++)
-//  {
-//  console.log("temp fully copied is below down = ")
-//  console.log(temp[i])
- 
-//  }
- }
+  else{
+    //this below code would separate sendId from offer table
+    const idN = result.map((c) => c.sendId);
+      console.log("id is down below");
+      console.log(idN);
+      const showOffer=`select id,name from reg where id IN (${idN.join(',')})`
+  db.query(showOffer,(err,offers)=>{
+    if(err){
+      console.error('Error fetching countries:', error);
+      res.status(500).json({ error: 'An error occurred while fetching countries' }); 
+    }
+    else{
+      console.log("reg are below");
+      console.log(offers);
+      console.log("offers are below");
+      console.log(result)
+      console.log("offers images  are below");
+      console.log(offers[0].image)
+    }
+      const response={
+    offers,
+    result
+  }
+
+    res.send(response);
+
+  })
+  
+    }
+
+})
 
 
-
-
-
-
-
-
-
-//   const query = `SELECT * FROM reg WHERE country = '${prop}'`;
-// db.query(query,(error,result)=>{
-//   if(error){
-//     console.error('Error executing the query:', error);
-//     return;
-//   }
-
-// //   console.log("result is below in test function")
-// //  console.log(result)
-// //  return 2
-// temp=result
-// // console.log("temp is below ")
-// // 
-// if(temp!='a'){
-//    console.log("temp 1 is below down = ")
-//   // console.log(temp)
-//   return temp;
-//  }
-// }
-
-//  )
-//  if(temp!='a'){
-//   console.log("temp 2 is below down = ")
-//   console.log(temp)
-//   return temp;
-//  }
-
-
-
-}
-
-
-
+})
 app.post('/searchCountries',(req,res)=>{
 
 
@@ -634,12 +600,6 @@ console.log(req.body)
   // Prepare the SQL query
   const query = 'INSERT INTO posts (pID, ToCountry, FromCountry,price, post, wgt) VALUES (?, ?, ?, ?, ?,?)';
 
-  console.log(pID);
-  console.log(ToCountry);
-  console.log(FromCountry);
-  console.log(price);
-  console.log(post);
-  console.log(wgt);
   // Execute the SQL query with the values as parameters
   db.query(query, [pID, ToCountry, FromCountry,price, post, wgt], (error, results) => {
     if (error) {
@@ -647,8 +607,7 @@ console.log(req.body)
       res.status(500).send('Error saving the values');
       return;
     }
-
-    console.log('Values saved to the database');
+     console.log('Values saved to the database');
 
     res.send('Values saved');
   });

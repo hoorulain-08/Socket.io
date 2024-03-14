@@ -1,7 +1,7 @@
 
 import { View, Text,Button,ImageBackground,TouchableOpacity } from 'react-native'
 import React, { useEffect ,useState,useContext} from 'react'
-import { GetData } from './GetData'
+// import { GetData } from './GetData'
 import { ContextApi } from '../App';
  import  {style}  from '../Style/style';
 export default function Home() {
@@ -9,11 +9,11 @@ export default function Home() {
   const [test,setTest]=useState([])
   const [temp,setTemp]=useState(false)
 //  let emailNew='bengladesh';
-  let LoginId=resp.id;
+  // let LoginId=resp.id;
 //  console.log("LogIn id in Home file is = " + LoginId)
   
   //this is just supposed login id which actually would be obtain through ContextApi  
-let imp=GetData('pakistan')// countries  would also be replaced through context Api 
+// let imp=GetData('pakistan')// countries  would also be replaced through context Api 
 // console.log("Home file is here below")
 // console.log(imp)
 let j=false;

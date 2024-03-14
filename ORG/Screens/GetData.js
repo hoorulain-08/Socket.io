@@ -1,20 +1,26 @@
 import { View, Text, Platform ,Image,Button} from 'react-native'
- import React, { useEffect ,useState} from 'react';
+ import React, { useContext, useEffect ,useState} from 'react';
 import * as FileSystem from 'expo-file-system';
+import { ContextApi } from '../App';
+
 
  export const GetData=(props)=> {
-    let emailNew=props;
-  //  console.log("props in GetData js is below down = ")
-    // console.log(emailNew);
-    const [testE,setTestE]=useState([]);
-    const [post,setPost]=useState(null); 
-    const [reg,setReg]=useState();
-    const[uril,setUril]=useState([]);
+  
+
+
+    const [testE,setTestE]=useState(['a']);
+    const [post,setPost]=useState(2); 
+    const [reg,setReg]=useState(2);
+  let CombinedArray=2;
     const [show,setShow]=useState(false);
-    const [temp,setTemp]=useState(null);
-    const[ret,setRet]=useState(null)
+    const [temp,setTemp]=useState(2);
+    const[ret,setRet]=useState(2)
+     const load=useContext(ContextApi);
+     props=load.country;
+
+    let emailNew=load.country;
     let Id=[]; let arr=[]; 
-    //let temp=null;
+    //let temp=2;
     useEffect(()=>{
      //console.log("value of post in useEffect  is below ")
     // console.log(post)
@@ -22,7 +28,7 @@ import * as FileSystem from 'expo-file-system';
     //    console.log(reg)
       // FetchApi();
       //    showImage();
-      if(post==null || temp==null){
+      if(post==2 || temp==2){
  //     console.log("executing if condition of  FetchAPI  useEffect   ")
       showImage();
       FetchApi();
@@ -30,31 +36,41 @@ import * as FileSystem from 'expo-file-system';
         
       }
 
-     else if(temp==2){
+     else if(temp==2){ 
     //   console.log("I have entered in temp==2 condition of else if  ")
 // console.log(testE[0])
 // console.log(testE[1])
 
-const combinedArray = reg.map((regItem, index) => ({
+ CombinedArray = reg.map((regItem, index) => ({
   id: regItem.id,
   name: regItem.name,
   image: testE[index],
   ...post.find((postItem) => postItem.pID === regItem.id),
 }));
 
-//console.log("combinedArray is below = ");
-// console.log(combinedArray);
-setRet(combinedArray)
+// console.log("CombinedArray is below = ");
+// console.log(CombinedArray);
+load.setData(CombinedArray);
+setRet(CombinedArray)
+// 
+// console.log("GetData the value of  data in context Api is below ")
+// console.log(load.data)
+// if(ret!=2){
+// load.setFlag(1);
+
+// }
+
+
 //         for(let i=0;i<post.length;i++){
 //           console.log("pictures  URI is  down below in useEffect of the temp==2 ")
 
 // console.log(arr[i])
 //         }
       }
-      //  else if(temp==null){
+      //  else if(temp==2){
       //   showImage();
       //  }
-      //  else if(post==null){
+      //  else if(post==2){
       //   // showImage();
       //   FetchApi();
       //  }
@@ -115,7 +131,7 @@ async function showImage(){
   for(let i=0;i<post.length;i++){
 id=i+1;
 
-    const localhost= Platform.OS === "android" ? "192.168.0.103" : "192.168.0.103";     
+    const localhost= Platform.OS === "android" ? "192.168.0.104" : "192.168.0.104";     
      filename = generateRandomString()+ '.jpg';
     // console.log("id is below ")
     // console.log(id);
@@ -147,7 +163,7 @@ setTemp(2)
 }
  async function FetchApi(){
     //  console.log("In Fetch Api function")
-      fetch('http://192.168.0.103:3000/searchM', { 
+      fetch('http://192.168.0.104:3000/searchM', { 
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -177,7 +193,7 @@ setTemp(2)
     for(let i=0;i<post.length;i++){
  id=i+1;
 
-      const localhost= Platform.OS === "android" ? "192.168.0.103" : "192.168.0.103";     
+      const localhost= Platform.OS === "android" ? "192.168.0.104" : "192.168.0.104";     
        filename = generateRandomString()+ '.jpg';
       // console.log("id is below ")
       // console.log(id);
@@ -200,7 +216,7 @@ setTemp(2)
     }
 
    // display();
-  //   const localhost= Platform.OS === "android" ? "192.168.70.158" : "192.168.70.158";     
+  //   const localhost= Platform.OS === "android" ? "192.168.43.250" : "192.168.43.250";     
   //   const result = await FileSystem.downloadAsync(
   //     `http://${localhost}:3000/image/${id}`,
   //     FileSystem.documentDirectory + filename,
@@ -220,6 +236,7 @@ setTemp(2)
 // console.log("the value has to be returned is here down")
 // console.log(ret)
 return ret
+
 //will remove this return Later 
 
 // const seeImage=()=>{

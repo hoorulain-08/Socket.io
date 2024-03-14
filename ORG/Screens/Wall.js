@@ -20,86 +20,74 @@ import { GetData } from './GetData';
 import { MyContext } from '../ContextApi/Context';
 import { ContextApi } from '../App';
  export default function Wall (props) {
-//   console.log("in wall js file below ");
-// console.log(props.TestExp)
-// here in this file API that would display the countries posts that matches the 
-// same country the user have 
+
 const route = useRoute();
-// if(props){
-//  const { TestExp } = route.params;
-// console.log("Data is below down ... ") 
-// console.log(TestExp)  
-// }
+
+
 const resp=useContext(ContextApi);
-const [show ,setShow]=useState(false);
-const [flag,setFlag]=useState(0)
+console.log('wall flag value in context Api is below')
+console.log(resp.data)
+let imp=resp.data;
+console.log('imp is =  ')
+console.log(imp)
+const [show ,setShow]=useState(null);
+
+
+let load=null;
 let country=resp.country;
-console.log("country received from login  is below  ")
-console.log(country)
+// console.log("loading data is below  ")
+// console.log(load)
 let tempCountry='pakistan'
-let imp=GetData(country);
+// useEffect(()=>{
+console.log(' wall flag value in context Api is below')
+console.log(resp.flag)
+// },[load])
+//   if(resp.flag==null){
+// func()    
+//  }
 
-if(imp==null){
-  console.log("loading posts")
-}
-else
-{
-//console.log("i have loaded components in GetData.js now in  wall file  ")
 
-//console.log(imp)
-if(flag==0){
-  console.log("in flag show the if condition is down below  value of flagis = " + flag)
-  showList();
-}
 
-}
+//   if(show==null){
+//     load=GetData(country); 
+
+//  }
+ function func(){
+  console.log("func is replacing the data ")
+ //  load=GetData('pakistan');
+// console.log(re;
+  setShow(1);
+//  resp.setFlag(1) 
+ }
+
+
+// if(load==null){
+//   console.log("loading posts");
+//   let
+//   console.log("value of K is down below ")
+//   console.log(k)
+//  if(imp !=null){
+// k=k+1;
+//   console.log("imp is not equall to null")
+//   console.log(imp);
+// //func();
+
+//  }
+// }
+// else
+// {
+// //console.log("i have loaded components in GetData.js now in  wall file  ")
+
+// //console.log(imp)
+// if(flag==0){
+//   console.log("in flag show the if condition is down below  value of flagis = " + flag)
+//   showList();
+// }
+
+// }
+
 
 let con=useContext(MyContext);
-// console.log("postValue is not null");
-//console.log(con.PostValue.pID)
-// if(con.PostValue.pID!==0){
-// console.log("postValue is not null")
-// }
-// // console.log(con.variableValue)
-
-    const Posts = [
-        {
-          id: '1',
-          userName: 'Jenny Doe',
-           userImg: require('../assets/users/user-3.jpg'),
-          postTime: '4 mins ago',
-          post:
-            'Hey there, THis is testing Post checking and testing .... for my cargo App  .',
-        //  postImg: require('../assets/posts/post-img-3.jpg'),
-        ToCountry:"UAE",
-        FromCountry:'Pakistan',
-        wgt:"10"
-        },
-        {
-          id: '2',
-          userName: 'Jenny Doe',
-           userImg: require('../assets/users/user-3.jpg'),
-          postTime: '4 mins ago',
-          post:
-             'Hey there, THis is testing Post checking and testing .... for my cargo App  .',
-        //  postImg: require('../assets/posts/post-img-3.jpg'),
-        ToCountry:"UAE",
-        FromCountry:'Pakistan',
-        wgt:"10"
-        },
-       
-
-  ]
-
-
-
-  // const combinedArray = [...Posts, ...TestExp];
-  const combinedArray = [...Posts];
-
- //console.log(combinedArray)
-
-
-
   const imageArray = [
    {userImg: require('../assets/users/user-3.jpg')} ,
    {userImg: require('../assets/users/user-1.jpg')},
@@ -113,49 +101,46 @@ let con=useContext(MyContext);
 
 function showList(){
   console.log("showList down below ")
-
-  setShow(true)
+setShow(true)
   setFlag(1)
-
 }
  
   return (
- 
-<SafeAreaView style={{marginTop:25}}>   
+
+    <SafeAreaView style={{marginTop:25}}>   
+    <FlatList
+    data={imp}
+    renderItem={({item}) => (
+      <PostCard
+        item={item}
+      
+      />
+    )}
+   
+  />  
+   </SafeAreaView> 
+  )
+}
+
+{/* <SafeAreaView style={{marginTop:25}}>   
 
     <View> 
+     <Text>
+      Hello World Loading 
+     </Text>
+          {/* {show?
 
-          {show?
-
-      <FlatList
-            data={imp}
-            renderItem={({item}) => (
-              <PostCard
-                item={item}
-               
-                // onPress={() =>
-                //   navigation.navigate('HomeProfile', {userId: item.userId})
-                // } I would instead inclde negio tiate button in App 
-              />
-            )}
-            // keyExtractor={(item) => item.id}
-           
-            // showsVerticalScrollIndicator={false}
-          />  
+   c
        :
          <Text style={{marginTop:50,marginLeft:50}}>
          Hellllo  World Loading
         </Text>
 
 }
-
+ 
 
 
      </View>
-    </SafeAreaView>
-  )
-}
-
-
+    </SafeAreaView> */}
 
 
